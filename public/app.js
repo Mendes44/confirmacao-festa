@@ -10,7 +10,7 @@ document.getElementById('confirmationForm').addEventListener('submit', async fun
         return;
     }
 
-    const response = await fetch('/submit', {
+    const response = await fetch('api/submit', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -25,7 +25,7 @@ document.getElementById('confirmationForm').addEventListener('submit', async fun
 });
 
 async function loadConfirmations() {
-    const response = await fetch('/confirmations');
+    const response = await fetch('api/confirmations');
     const confirmations = await response.json();
 
     const confirmationList = document.getElementById('confirmationList');
