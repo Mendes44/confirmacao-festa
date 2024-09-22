@@ -1,4 +1,4 @@
-const ConfirmacaoService = require('.api/confirmacaoService');
+const ConfirmacaoService = require('.confirmacaoService');
 
 module.exports = async (req, res) => {
     const { name, attendance, drink } = req.body;
