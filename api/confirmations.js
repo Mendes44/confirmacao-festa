@@ -1,4 +1,4 @@
-const ConfirmacaoService = require('./api/confirmacaoService'); // Corrigido o caminho
+const ConfirmacaoService = require('./confirmacaoService');
 
 module.exports = async (req, res) => {
     try {
@@ -7,6 +7,6 @@ module.exports = async (req, res) => {
         res.status(200).json(confirmations);
     } catch (error) {
         console.error('Erro ao obter confirmações:', error);
-        res.status(500).json({ error: 'Erro ao obter confirmações' });
+        res.status(500).json({ message: 'Erro ao obter confirmações' });
     }
 };
