@@ -1,4 +1,4 @@
-const ConfirmacaoService = require('./api/confirmacaoService'); // Corrigido o caminho
+const ConfirmacaoService = require('./confirmacaoService'); // Corrigido o caminho
 
 module.exports = async (req, res) => {
     const { name, attendance, drink } = req.body;
