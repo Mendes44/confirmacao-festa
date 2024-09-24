@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const ConfirmacaoService = require('./ConfirmacaoService');
+const ConfirmacaoService = require('./api/confirmacaoService'); // Corrigido o caminho
 const app = express();
 const port = 3000;
 
-const confirmacaoService = new ConfirmacaoService('./confirmacao_festa.xlsx');
+const confirmacaoService = new ConfirmacaoService();
 
 app.use(bodyParser.json());
 app.use(express.static('public'));
@@ -24,7 +24,7 @@ function validateData(name, attendance, drink) {
 }
 
 // Rota para receber dados do formulário
-app.post('/submit', (req, res) => {
+app.post('/api/submit', async (req, res) => {
     const { name, attendance, drink } = req.body;
 
     // Validação dos dados
@@ -34,12 +34,12 @@ app.post('/submit', (req, res) => {
     }
 
     // Verificar se o nome já existe
-    if (confirmacaoService.isDuplicateName(name)) {
+    if (await confirmacaoService.isDuplicateName(name)) {
         return res.status(400).json({ message: 'Esse nome já foi usado para confirmar presença.' });
     }
 
     // Adiciona os dados à planilha
-    confirmacaoService.addConfirmation({
+    await confirmacaoService.addConfirmation({
         Nome: name,
         Presença: attendance,
         Bebida: drink,
@@ -50,9 +50,14 @@ app.post('/submit', (req, res) => {
 });
 
 // Rota para obter a lista de confirmações
-app.get('/confirmations', (req, res) => {
-    const confirmations = confirmacaoService.getAllConfirmations();
-    res.json(confirmations);
+app.get('/api/confirmations', async (req, res) => {
+    try {
+        const confirmations = await confirmacaoService.getAllConfirmations();
+        res.json(confirmations);
+    } catch (error) {
+        console.error('Erro ao obter confirmações:', error);
+        res.status(500).json({ message: 'Erro ao obter confirmações' });
+    }
 });
 
 // Inicia o servidor
